@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Pan",
+    "price": 20
+  },
+  {
+    "id": 2,
+    "title": "Azucar",
+    "price": 150
+  },
+  {
+    "id": 3,
+    "title": "Aceite",
+    "price": 250
+  },
+  {
+    "id": 4,
+    "title": "sal",
+    "price": 250
+  }
+]
