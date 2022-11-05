@@ -1,5 +1,5 @@
 const express = require('express')
-
+const { randomUUID } = require('crypto');
 const servidor = express()
 
 //****************INICIO CONTENEDOR ARCHIVO*********************** */
@@ -7,14 +7,13 @@ const fs = require('fs')
 let misProductos = [
 	{
 		
-		id:0,
+	
         title: "Pan",
         price: 20,
 	
 	},
     {
-		
-		id:0,
+	
         title: "Azucar",
         price: 150,
 
@@ -22,7 +21,7 @@ let misProductos = [
 
     {
 		
-		id:0,
+	
         title: "Aceite",
         price: 250,
 
@@ -30,7 +29,7 @@ let misProductos = [
 
     {
 		
-		id:0,
+	
         title: "sal",
         price: 250,
 
@@ -38,7 +37,7 @@ let misProductos = [
 
     {
 		
-		id:0,
+		
         title: "Queso",
         price: 50,
 
@@ -61,18 +60,9 @@ class ContenedorArchivo {
 
         try{
            
-            if(this.productos.length===0)
-            {
-                miProducto.id =1;
-            }
-            else
-            {
-                miProducto.id = this.productos.length+1
-             
-            }
-
-         
-            this.productos.push(miProducto)
+ 
+            let id = randomUUID()
+            this.productos.push({id,...miProducto})
             await fs.promises.writeFile(this.ruta, JSON.stringify(this.productos,null,2))
      
         
@@ -100,7 +90,7 @@ class ContenedorArchivo {
     async getAll(){
 
         this.productos = JSON.parse(await fs.promises.readFile(this.ruta, 'utf-8'))
-   
+        console.log(this.productos)
         return(this.productos)
     }
 
@@ -175,10 +165,15 @@ async function save() {
     }
 
     async function ControladorPostProductos(req, res){
-        await contenedor.save(misProductos[4])
+        // await contenedor.save(misProductos[4])
 
-       
-  
+        const productoNuevo = req.body;
+   
+        await contenedor.save(productoNuevo)
+     
+        // res.status(201);
+        // res.json(contenedor);
+        this.productos = await contenedor.getAll()
         res.json(this.productos[this.productos.length-1])
     }
 
